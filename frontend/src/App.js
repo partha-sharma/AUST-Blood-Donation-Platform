@@ -1,5 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import About from './components/About'; 
+// 1. Create the placeholder component for the Newsfeed page
+const Newsfeed = () => (
+  <div style={{ textAlign: 'center', padding: '50px' }}>
+    <h1>Welcome to the AUST Blood Donor Platform</h1>
+    <p>This is the newsfeed where blood requests will be shown.</p>
+  </div>
+);
 
 const App = () => {
   // 1. Add the style objects for the navigation
@@ -25,6 +33,12 @@ const App = () => {
           <Link to="/" style={linkStyle}>Newsfeed</Link>
           <Link to="/about" style={linkStyle}>About</Link>
         </nav>
+   
+        <Routes>
+          <Route path="/" element={<Newsfeed />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+   
       </div>
     </Router>
   );
