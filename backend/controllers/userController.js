@@ -7,6 +7,12 @@ const User = require('../models/User');
 const registerUser = async (req, res) => {
   try {
     const { fullName, email, password, bloodGroup, department /* ...other fields */ } = req.body;
+    
+    if (!req.file) { 
+      return res.status(400).json({ message: 'University ID photo is required' });
+    }
+    const universityIdPhoto = req.file.path;
+
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -15,7 +21,8 @@ const registerUser = async (req, res) => {
     }
 
     const user = await User.create({
-      fullName, email, password, bloodGroup, department /* ...other fields */
+      fullName, email, password, bloodGroup, department, /* ...other fields */
+      universityIdPhoto: universityIdPhoto 
     });
     
     // 201 means something was successfully created
