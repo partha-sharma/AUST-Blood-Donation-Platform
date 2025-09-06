@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import Login from './components/Login';
 
 // Import the component you just created
 import Register from './components/Register';
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             {/* This line tells the app: when the URL is "/register", show the Register component */}
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             
             {/* You can add a temporary Home route as well */}
             <Route path="/" element={<h1>Welcome to the AUST Blood Donor Platform</h1>} />
