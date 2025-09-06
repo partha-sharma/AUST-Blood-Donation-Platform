@@ -35,7 +35,7 @@
   margin-top: 4px;
 }
 
-/* Style for the tags like REPOSTED and URGENT */
+/* Style REPOSTED and URGENT */
 .tags {
   display: flex;
   gap: 8px;
@@ -111,4 +111,28 @@
 /* For urgent posts, we can change the left border color */
 .urgentCard {
   border-left: 4px solid #d9534f;
+}
+
+/* A container for the buttons to add spacing */
+.buttonGroup {
+  display: flex;
+  gap: 10px; /* This creates space between the two buttons */
+}
+
+/* The new, primary "I can donate" button */
+.donateButton {
+  background-color: #d9534f; /* red */
+  color: white;
+  border: 1px solid #d43f3a; 
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 600; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+.donateButton:hover {
+  background-color: #c9302c; 
 }

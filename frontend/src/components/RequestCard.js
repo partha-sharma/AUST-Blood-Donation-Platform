@@ -1,7 +1,7 @@
 // frontend/src/components/RequestCard.js
 import React from 'react';
 import styles from './RequestCard.module.css'; 
-import { Heart, Droplet, MapPin, UserCheck, Send } from 'lucide-react';
+import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart } from 'lucide-react';
 
 const RequestCard = ({ request }) => {
   const cardClasses = `${styles.card} ${request.isUrgent ? styles.urgentCard : ''}`;
@@ -45,10 +45,16 @@ const RequestCard = ({ request }) => {
             You've responded to this request. The poster will contact you if accepted.
           </p>
         ) : (
-          <button className={styles.actionButton}>
-            <Send size={16}/>
-            I Can Arrange
-          </button>
+            <div className={styles.buttonGroup}>
+                <button className={styles.actionButton}>
+                <Send size={16}/>
+                I Can Manage
+                </button>
+                <button className={styles.donateButton}>
+                <HandHeart size={16}/>
+                I'm Ready to Donate
+                </button>
+            </div>
         )}
       </div>
     </div>

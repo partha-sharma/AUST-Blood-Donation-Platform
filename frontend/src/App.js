@@ -1,23 +1,35 @@
-
+// frontend/src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+
+// all  components
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import About from './components/About';
+import Login from './components/Login';
+import Register from './components/Register';
 import Newsfeed from './components/Newsfeed';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        {/* This is a temporary nav for testing. Partha pore real ta banabe */}
-        <nav style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
-          <Link to="/newsfeed">Go to Newsfeed</Link>
-        </nav>
-
+        {/* The Navbar is outside <Routes>, so it will show on every page */}
+        <Navbar /> 
+        
         <main>
           <Routes>
+            {/* Route for the new Home component */}
+            <Route path="/" element={<Home />} /> 
+            
+            {/* Routes for our new placeholder pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* Your existing Newsfeed route */}
             <Route path="/newsfeed" element={<Newsfeed />} />
-            {/* Add a default welcome message for the home path */}
-            <Route path="/" element={<h1>Welcome to the AUST Blood Donor Platform</h1>} />
           </Routes>
         </main>
       </div>
