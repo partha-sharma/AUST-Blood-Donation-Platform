@@ -27,7 +27,8 @@ const About = () => {
       </div>
       {/* (You can continue adding the rest of the sections here, like "Our Mission", etc.) */}
       <div style={sectionStyle}><h3 style={h3Style}>Our Mission</h3><p style={pStyle}>To create a trusted network where members of the AUST community can quickly find blood donors in times of medical emergencies, fostering a spirit of mutual aid and solidarity within our campus.</p></div>
-
+ <div style={sectionStyle}><h3 style={h3Style}>How It Works</h3><ul style={listStyle}><li>Only verified @aust.edu email holders can participate.</li><li>Post blood requests with required details and location.</li><li>Eligible donors receive notifications for matching blood groups.</li><li>Donors can offer to donate directly or arrange through contacts.</li><li>All connections are facilitated through the platform's mail system.</li><li>Posts can be reposted after 36 hours if no response is received.</li></ul></div>
+      <div style={sectionStyle}><h3 style={h3Style}>Safety & Privacy</h3><ul style={listStyle}><li>All users must be verified by admin with valid AUST ID.</li><li>Contact details are shared only after donor consent.</li><li>Platform facilitates connections - we don't store blood.</li><li>Always consult medical professionals for urgent needs.</li></ul></div>
   );
 };
 
