@@ -1,12 +1,14 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-import './App.css';
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>AUST Blood Donor Platform</h1>
-    </div>
+    <Router>
+      <div>
+        <h1>AUST Blood Donor Platform</h1>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
