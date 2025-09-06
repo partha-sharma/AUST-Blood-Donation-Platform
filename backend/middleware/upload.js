@@ -8,10 +8,25 @@ const storage = multer.diskStorage({
     cb(null, 'backend/uploads/'); // Save files to the "uploads" folder
   },
   filename: function (req, file, cb) {
-    // Create a unique filename to avoid overwrites
+  // Get the email from the request body. We're assuming the client sends it.
+  const email = req.body.email; 
+  
+  if (!email) {
+    // If for some reason the email isn't there, fall back to a random name
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    cb(null, 'user-id-' + uniqueSuffix + path.extname(file.originalname));
+    return;
   }
+  
+  // Sanitize the email to make it a safe filename component
+  // 'partha.cse@aust.edu' becomes 'partha_cse_aust_edu'
+  const sanitizedEmail = email.replace(/[@.]/g, '_');
+  
+  const uniqueSuffix = Date.now(); // The timestamp is enough for uniqueness
+  const newFilename = `${sanitizedEmail}-${uniqueSuffix}${path.extname(file.originalname)}`;
+  
+  cb(null, newFilename);
+}
 });
 
 // Create the upload middleware
