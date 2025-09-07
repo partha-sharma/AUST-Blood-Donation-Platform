@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // frontend/src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -63,8 +62,4 @@ const Login = () => {
   );
 };
 
-=======
-import React from 'react';
-const Login = () => <div><h1>Login Page</h1><p>Partha will work on this page.</p></div>;
->>>>>>> main
 export default Login;
