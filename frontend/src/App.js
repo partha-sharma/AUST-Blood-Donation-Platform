@@ -1,44 +1,43 @@
+
+// frontend/src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import About from './components/About'; 
-// 1. Create the placeholder component for the Newsfeed page
-const Newsfeed = () => (
-  <div style={{ textAlign: 'center', padding: '50px' }}>
-    <h1>Welcome to the AUST Blood Donor Platform</h1>
-    <p>This is the newsfeed where blood requests will be shown.</p>
-  </div>
-);
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
-const App = () => {
-  // 1. Add the style objects for the navigation
-  const navStyle = {
-    backgroundColor: '#f8f8f8',
-    padding: '10px 40px',
-    borderBottom: '1px solid #ddd',
-    display: 'flex',
-    gap: '20px',
-  };
+// all  components
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import About from './components/About';
+import Login from './components/Login';
+import Register from './components/Register';
+import Newsfeed from './components/Newsfeed';
 
-  const linkStyle = {
-    textDecoration: 'none',
-    color: '#d9534f',
-    fontWeight: 'bold',
-  };
+function App() {
+
 
   return (
     <Router>
-      <div>
-        {/* 2. Add the navigation bar using the styles */}
-        <nav style={navStyle}>
-          <Link to="/" style={linkStyle}>Newsfeed</Link>
-          <Link to="/about" style={linkStyle}>About</Link>
-        </nav>
-   
-        <Routes>
-          <Route path="/" element={<Newsfeed />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-   
+      
+      <div className="App">
+        {/* The Navbar is outside <Routes>, so it will show on every page */}
+
+        <Navbar /> 
+        
+        <main>
+          <Routes>
+            {/* Route for the new Home component */}
+            
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+
+            {/* Hishams route added for about */}
+            <Route path="/about" element={<About />} />
+            {/* MAHDI'S ROUTES */}
+            <Route path="/" element={<Home />} /> 
+            <Route path="/newsfeed" element={<Newsfeed />} />
+            
+          </Routes>
+        </main>
       </div>
     </Router>
   );

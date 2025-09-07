@@ -1,0 +1,138 @@
+/* frontend/src/components/RequestCard.module.css */
+
+/*main card container */
+.card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid transparent; /* Default border color */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease-in-out;
+  text-align: left;
+}
+.card:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Header section with heart, title, and poster info */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 15px; /* space between icon and text */
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.posterInfo {
+  color: #757575;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* Style REPOSTED and URGENT */
+.tags {
+  display: flex;
+  gap: 8px;
+  margin-left: auto; /* Pushes tags to the right */
+}
+.tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+}
+.repostTag {
+  background-color: #f0ad4e; /* Orange */
+}
+.urgentTag {
+  background-color: #d9534f; /* Red */
+}
+
+/* Body section with bags and location */
+.body {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between the two info items */
+  color: #555;
+  margin-bottom: 16px;
+  padding-left: 5px; /* To align with text from header */
+}
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Description text */
+.details {
+  margin-bottom: 20px;
+  color: #333;
+  padding-left: 5px;
+}
+
+/* Footer section with the response button/message */
+.footer {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  display: flex;
+  justify-content: flex-end; /* Pushes content to the right */
+  align-items: center;
+}
+
+/* Action Button */
+.actionButton {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.actionButton:hover {
+  background-color: #e9e9e9;
+}
+
+/* Message for when user has already responded */
+.respondedMessage {
+  color: #28a745; /* Green */
+  font-weight: 500;
+}
+
+/* For urgent posts, we can change the left border color */
+.urgentCard {
+  border-left: 4px solid #d9534f;
+}
+
+/* A container for the buttons to add spacing */
+.buttonGroup {
+  display: flex;
+  gap: 10px; /* This creates space between the two buttons */
+}
+
+/* The new, primary "I can donate" button */
+.donateButton {
+  background-color: #d9534f; /* red */
+  color: white;
+  border: 1px solid #d43f3a; 
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 600; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+.donateButton:hover {
+  background-color: #c9302c; 
+}
