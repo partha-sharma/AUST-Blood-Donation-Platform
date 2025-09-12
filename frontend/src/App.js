@@ -14,31 +14,22 @@ import Newsfeed from './components/Newsfeed';
 
 function App() {
 
-
-  return (
+return (
     <Router>
+      {/* Navbar is placed outside of Routes to be visible on every page */}
+      <Navbar /> 
       
-      <div className="App">
-        {/* The Navbar is outside <Routes>, so it will show on every page */}
-
-        <Navbar /> 
-        
-        <main>
-          <Routes>
-            {/* Route for the new Home component */}
-            
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-
-            {/* Hishams route added for about */}
-            <Route path="/about" element={<About />} />
-            {/* MAHDI'S ROUTES */}
-            <Route path="/" element={<Home />} /> 
-            <Route path="/newsfeed" element={<Newsfeed />} />
-            
-          </Routes>
-        </main>
-      </div>
+      <main>
+        <Routes>
+          {/* Your new Home component is the default page */}
+          <Route path="/" element={<Home />} />
+          
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+           <Route path="/about" element={<About />} /> 
+          <Route path="/newsfeed" element={<Newsfeed />} />
+        </Routes>
+      </main>
     </Router>
   );
 };
