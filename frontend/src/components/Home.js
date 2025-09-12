@@ -1,7 +1,7 @@
 import React from 'react';
 // We will create these components next
  import HeroSection from './HeroSection';
-// import InfoSection from './InfoSection';
+import InfoSection from './InfoSection';
 // ... and so on
 
 const Home = () => {
@@ -10,9 +10,9 @@ const Home = () => {
     <div style={{ paddingTop: '70px' }}> 
         
         {
-          <HeroSection />
-          /*
+          // <HeroSection ,
           <InfoSection />
+          /*
           <CompatibilitySection />
           <ProcessSection />
           <AwardsSection />
