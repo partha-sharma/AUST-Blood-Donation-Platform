@@ -1,42 +1,22 @@
-
-// frontend/src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-
-// all  components
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import About from './components/About';
-import Login from './components/Login';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar'; 
 import DashboardPage from './pages/DashboardPage';
-import RequestBloodPage from './pages/RequestBloodPage'; 
-import Register from './components/Register';
-import Newsfeed from './components/Newsfeed';
+import RequestBloodPage from './pages/RequestBloodPage'; // Make sure this line exists
 
 function App() {
-
-return (
+  return (
     <Router>
-      {/* Navbar is placed outside of Routes to be visible on every page */}
       <Navbar /> 
-      
       <main>
         <Routes>
-          {/* Your new Home component is the default page */}
-          <Route path="/" element={<Home />} />
-          
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-           <Route path="/about" element={<About />} /> 
-          <Route path="/newsfeed" element={<Newsfeed />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-   <Route path="/request-blood" element={<RequestBloodPage />} /> {/* <-- Add this route */}
-
+          <Route path="/dashboard" element={<DashboardPage />} />
+          {/* This next line is what makes the page load correctly */}
+          <Route path="/request-blood" element={<RequestBloodPage />} />
+          {/* Other Routes */}
         </Routes>
       </main>
     </Router>
   );
-};
+}
 
 export default App;

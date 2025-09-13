@@ -1,217 +1,87 @@
-// frontend/src/components/Register.js
-
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
+// import './Register.css';
 
 const Register = () => {
-  // Styles are perfect, no changes needed here
-  const styles = {
-    container: {
-      maxWidth: "500px",
-      margin: "30px auto",
-      padding: "30px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      borderRadius: "8px",
-      backgroundColor: "#fff",
-    },
-    formGroup: { marginBottom: "20px" },
-    label: {
-      display: "block",
-      marginBottom: "8px",
-      fontWeight: "bold",
-      color: "#555",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      boxSizing: "border-box",
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-    },
-    button: {
-      width: "100%",
-      padding: "12px",
-      backgroundColor: "#58616a",
-      color: "white",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      fontSize: "16px",
-    },
-    header: { textAlign: "center", marginBottom: "10px" },
-    p: {
-      textAlign: "center",
-      color: "#666",
-      marginTop: "-10px",
-      marginBottom: "30px",
-    },
+  // State for all form fields
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    bloodGroup: '',
+    department: '',
+    position: '',
+    currentSemester: 'Fall 2024',
+    gender: '',
+    presentAddress: '',
+    phoneNumber: '',
+  });
+  const [universityIdPhoto, setUniversityIdPhoto] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Handler for text input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    bloodGroup: "",
-    department: "", // You need a field for this
-    yearPosition: "",
-    currentSemester: "Fall 2024",
-    gender: "",
-    address: "",
-    phone: "",
-  });
+  // Handler for file input change
+  const handleFileChange = (e) => {
+    setUniversityIdPhoto(e.target.files[0]);
+  };
 
-  const [universityIdPhoto, setUniversityIdPhoto] = useState(null);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
-  const {
-    fullName,
-    email,
-    password,
-    bloodGroup,
-    department,
-    yearPosition,
-    currentSemester,
-    gender,
-    address,
-    phone,
-  } = formData;
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onFileChange = (e) => setUniversityIdPhoto(e.target.files[0]);
-
-  const [message, setMessage] = useState("");
-
-  const [error, setError] = useState("");
-
-  const onSubmit = async (e) => {
-    e.preventDefault(); // Prevents the browser from reloading the page
-    setMessage("");
-    setError("");
-
-    // Check if a file has been selected
-    if (!universityIdPhoto) {
-      setError("Please upload your University ID photo.");
-      return; // Stop the function here
-    }
-
-    // Create a FormData object to send both text and file data
-    const registrationData = new FormData();
-
-    // Append all the text data from the 'formData' state
+    // Use FormData because we are sending a file
+    const submissionData = new FormData();
+    // Append all text fields
     for (const key in formData) {
-      registrationData.append(key, formData[key]);
+      submissionData.append(key, formData[key]);
     }
-    // Append the photo file from the 'universityIdPhoto' state
-    registrationData.append("universityIdPhoto", universityIdPhoto);
+    // Append the file
+    submissionData.append('universityIdPhoto', universityIdPhoto);
 
     try {
-      // Send the request to the backend with axios
-      const res = await axios.post(
-        "http://localhost:5000/api/users/register",
-        registrationData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      // If successful, show the success message from the server
-      setMessage(res.data.message);
+      await axios.post('/api/users/register', submissionData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      // Handle successful registration (e.g., redirect to login)
+      alert('Registration successful! Please log in.');
     } catch (err) {
-      // If there's an error, show the error message from the server
-      setError(
-        err.response?.data?.message || "An error occurred. Please try again."
-      );
+      const message =
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred.';
+      setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Register for AUST Blood Donor Platform</h2>
-      <p style={styles.p}>
-        Sign up with your @aust.edu email and upload your student/teacher ID for
-        verification
-      </p>
+    <div>
+      <h1>Register for AUST Blood Donor Platform</h1>
+      <p>Sign up with your @aust.edu email and upload your student/teacher ID for verification</p>
 
-      {message && (
-        <div
-          style={{
-            padding: "10px",
-            backgroundColor: "#d4edda",
-            color: "#155724",
-            borderRadius: "4px",
-            marginBottom: "15px",
-            textAlign: "center",
-          }}
-        >
-          {message}
-        </div>
-      )}
-      {error && (
-        <div
-          style={{
-            padding: "10px",
-            backgroundColor: "#f8d7da",
-            color: "#721c24",
-            borderRadius: "4px",
-            marginBottom: "15px",
-            textAlign: "center",
-          }}
-        >
-          {error}
-        </div>
-      )}
+      {error && <p style={{ color: 'red', border: '1px solid red', padding: '10px' }}>{error}</p>}
 
-      <form onSubmit={onSubmit}>
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Full Name</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="fullName"
-            value={fullName}
-            onChange={onChange}
-            placeholder="Enter your full name"
-            required
-          />
-        </div>
+      <form onSubmit={submitHandler}>
+        {/* --- Full Name --- */}
+        <input type="text" name="fullName" placeholder="Enter your full name" onChange={handleChange} required />
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>AUST Email</label>
-          <input
-            style={styles.input}
-            type="email"
-            name="email"
-            value={email}
-            onChange={onChange}
-            placeholder="your.name@aust.edu"
-            required
-          />
-        </div>
+        {/* --- AUST Email --- */}
+        <input type="email" name="email" placeholder="your.name@aust.edu" onChange={handleChange} required />
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Password</label>
-          <input
-            style={styles.input}
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            minLength="6"
-            required
-          />
-        </div>
-
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Blood Group</label>
-          <select
-            style={styles.input}
-            name="bloodGroup"
-            value={bloodGroup}
-            onChange={onChange}
-            required
-          >
+        {/* --- Password --- */}
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+        
+        {/* --- Blood Group (Dropdown) --- */}
+        <select name="bloodGroup" onChange={handleChange} required>
             <option value="">Select your blood group</option>
             <option value="A+">A+</option>
             <option value="A-">A-</option>
@@ -221,102 +91,44 @@ const Register = () => {
             <option value="AB-">AB-</option>
             <option value="O+">O+</option>
             <option value="O-">O-</option>
-          </select>
-        </div>
+        </select>
+        
+        {/* --- Department (CHANGED to Dropdown) --- */}
+        <select name="department" onChange={handleChange} required>
+            <option value="">Select Department</option>
+            <option value="CSE">CSE</option>
+            <option value="EEE">EEE</option>
+            <option value="BBA">BBA</option>
+            <option value="Arch">Architecture</option>
+            <option value="ME">Mechanical Engineering</option>
+            <option value="IPE">Industrial & Production Engineering</option>
+        </select>
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Department</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="department"
-            value={department}
-            onChange={onChange}
-            placeholder="e.g., CSE, EEE"
-            required
-          />
-        </div>
+        {/* --- Position (CHANGED Label and Placeholder) --- */}
+        <input type="text" name="position" placeholder="e.g., Student or Assistant Professor" onChange={handleChange} required />
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Year/Position</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="yearPosition"
-            value={yearPosition}
-            onChange={onChange}
-            placeholder="e.g., 3rd Year or Assistant Professor"
-            required
-          />
-        </div>
-
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Current Semester</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="currentSemester"
-            value={currentSemester}
-            onChange={onChange}
-            required
-          />
-        </div>
-
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Gender</label>
-          <select
-            style={styles.input}
-            name="gender"
-            value={gender}
-            onChange={onChange}
-            required
-          >
+        {/* --- Current Semester --- */}
+        <input type="text" name="currentSemester" defaultValue="Fall 2024" onChange={handleChange} required />
+        
+        {/* --- Gender (Dropdown) --- */}
+        <select name="gender" onChange={handleChange} required>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
-          </select>
-        </div>
+        </select>
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Present Address</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="address"
-            value={address}
-            onChange={onChange}
-            placeholder="Enter your Present Address"
-            required
-          />
-        </div>
+        {/* --- Present Address --- */}
+        <input type="text" name="presentAddress" placeholder="Enter your Present Address" onChange={handleChange} required />
+        
+        {/* --- Phone Number --- */}
+        <input type="text" name="phoneNumber" placeholder="Enter active Phone number" onChange={handleChange} required />
+        
+        {/* --- University ID Photo --- */}
+        <input type="file" name="universityIdPhoto" onChange={handleFileChange} required />
 
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Phone Number</label>
-          <input
-            style={styles.input}
-            type="text"
-            name="phone"
-            value={phone}
-            onChange={onChange}
-            placeholder="Enter active Phone number"
-            required
-          />
-        </div>
-
-        <div style={styles.formGroup}>
-          <label style={styles.label}>University ID Photo</label>
-          <input
-            style={styles.input}
-            type="file"
-            name="universityIdPhoto"
-            onChange={onFileChange}
-            required
-          />
-        </div>
-
-        <button type="submit" style={styles.button}>
-          Submit Registration
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit Registration'}
         </button>
       </form>
     </div>
