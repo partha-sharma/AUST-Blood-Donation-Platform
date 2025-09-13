@@ -1,57 +1,43 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const userSchema = mongoose.Schema(
-  {
-    fullName: { type: String, required: [true, 'Full name is required'] },
-    austEmail: {
-      type: String,
-      required: [true, 'AUST email is required'],
-      unique: true,
-      match: [/@aust\.edu$/, 'Please enter a valid AUST email (@aust.edu)'],
+const userSchema = mongoose.Schema({
+    fullName: { type: String, required: [true, 'Please add a full name'] },
+    email: {
+        type: String,
+        required: [true, 'Please add an email'],
+        unique: true,
+        match: [/@aust\.edu$/, 'Please use a valid @aust.edu email address']
     },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [8, 'Password must be at least 8 characters long'],
-      validate: {
-        validator: function (v) {
-          // Requires at least one special character
-          return /[!@#$%^&*(),.?":{}|<>]/.test(v);
-        },
-        message: 'Password must contain at least one special character (@, #, $, etc.)',
-      },
-    },
-    bloodGroup: { type: String, required: [true, 'Blood group is required'] },
-    department: { type: String, required: [true, 'Department is required'] },
-    position: { type: String, required: [true, 'Position is required'] },
-    currentSemester: { type: String, required: [true, 'Current semester is required'] },
-    gender: { type: String, required: [true, 'Gender is required'] },
-    presentAddress: { type: String, required: [true, 'Present address is required'] },
+    password: { type: String, required: [true, 'Please add a password'] },
+    bloodGroup: { type: String, required: [true, 'Please select a blood group'] },
+    department: { type: String, required: [true, 'Please add a department'] },
+    yearPosition: { type: String, required: [true, 'Please add your year or position'] },
+    currentSemester: { type: String, required: [true, 'Please add the current semester'] },
+    gender: { type: String, required: [true, 'Please select a gender'] },
+    presentAddress: { type: String, required: [true, 'Please add a present address'] },
     phone: {
-      type: String,
-      required: [true, 'Phone number is required'],
-      validate: {
-        validator: function (v) {
-          return /^\d{11}$/.test(v);
-        },
-        message: 'Phone number must be exactly 11 digits',
-      },
+        type: String,
+        required: [true, 'Please add a phone number'],
+        validate: {
+            validator: function(v) {
+                return /^\d{11}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid 11-digit phone number!`
+        }
     },
-    universityIdPhoto: { type: String, required: [true, 'University ID photo is required'] },
-  },
-  {
-    timestamps: true,
-  }
-);
+    universityIdPhoto: { type: String, required: true },
+}, {
+    timestamps: true
+});
 
-// Encrypt password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+// Hash password before saving the user
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
 const User = mongoose.model('User', userSchema);
