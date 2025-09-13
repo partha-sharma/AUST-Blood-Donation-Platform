@@ -1,4 +1,3 @@
-
 import asyncHandler from 'express-async-handler';
 import validator from 'validator';
 import User from '../models/userModel.js';
@@ -7,7 +6,7 @@ import generateToken from '../utils/generateToken.js';
 // @desc    Register a new user
 // @route   POST /api/users/register
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   const {
     fullName,
     email,
@@ -31,7 +30,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // 2. Password Strength Validation
-  if (!validator.isStrongPassword(password, {
+  if (
+    !validator.isStrongPassword(password, {
       minLength: 8,
       minLowercase: 1,
       minUppercase: 1,
@@ -81,5 +81,3 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid user data received');
   }
 });
-
-export { registerUser };

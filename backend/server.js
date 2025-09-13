@@ -1,34 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose'); // mongodb connect
-const cors = require('cors');
-//
-const dotenv = require('dotenv');
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path'; // Import the path module
+import userRoutes from './routes/userRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
-const app = express();
+// connectDB();
 
-app.use(cors());
+const app = express();
+const port = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const userRoutes = require('./routes/userRoutes');
-const requestRoutes = require('./routes/requestRoutes'); //added this for the route for blood request.
-
-
-app.get('/', (req, res) => {
-  res.json({ message: 'AUST Blood Donor API is running!' });
-});
-
 app.use('/api/users', userRoutes);
-app.use('/api/requests', requestRoutes); // this is for the api call of blood request.
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
-  
-const PORT = process.env.PORT || 5000;
+// --- Make 'uploads' folder static ---
+const __dirname = path.resolve(); // Get the current directory path
+app.use('/uploads', express.static(path.join(__dirname, '/backend/uploads')));
+// Now, a file at backend/uploads/image.jpg can be accessed at http://localhost:5000/uploads/image.jpg
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
