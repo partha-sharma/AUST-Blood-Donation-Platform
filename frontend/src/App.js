@@ -1,21 +1,18 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar'; 
-import DashboardPage from './pages/DashboardPage';
-import RequestBloodPage from './pages/RequestBloodPage'; // Make sure this line exists
+import React from 'react';
+import RegisterForm from './components/RegisterForm';
+import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Navbar /> 
+    <div className="App">
+      <header className="App-header">
+        <h1>Register for AUST Blood Donor Platform</h1>
+        <p>Sign up with your @aust.edu email and upload your student/teacher ID for verification</p>
+      </header>
       <main>
-        <Routes>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          {/* This next line is what makes the page load correctly */}
-          <Route path="/request-blood" element={<RequestBloodPage />} />
-          {/* Other Routes */}
-        </Routes>
+        <RegisterForm />
       </main>
-    </Router>
+    </div>
   );
 }
 

@@ -1,137 +1,169 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-// import './Register.css';
+import React, { useState } from "react";
+import API from "../api";
 
 const Register = () => {
-  // State for all form fields
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    bloodGroup: '',
-    department: '',
-    position: '',
-    currentSemester: 'Fall 2024',
-    gender: '',
-    presentAddress: '',
-    phoneNumber: '',
+    fullName: "",
+    email: "",
+    password: "",
+    bloodGroup: "",
+    department: "",
+    position: "",
+    currentSemester: "",
+    gender: "",
+    presentAddress: "",
+    phone: "",
+    universityIdPhoto: null,
   });
-  const [universityIdPhoto, setUniversityIdPhoto] = useState(null);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  // Handler for text input changes
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [error, setError] = useState("");
 
-  // Handler for file input change
-  const handleFileChange = (e) => {
-    setUniversityIdPhoto(e.target.files[0]);
-  };
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    // Use FormData because we are sending a file
-    const submissionData = new FormData();
-    // Append all text fields
-    for (const key in formData) {
-      submissionData.append(key, formData[key]);
+  const validate = () => {
+    if (!/@gmail\.com$/.test(formData.email)) {
+      return "Invalid email. Please use a @gmail.com address";
     }
-    // Append the file
-    submissionData.append('universityIdPhoto', universityIdPhoto);
+    if (formData.password.length < 8 || !/[!@#$%^&*]/.test(formData.password)) {
+      return "Password must be 8+ chars and contain a special symbol";
+    }
+    if (!/^\d{11}$/.test(formData.phone)) {
+      return "Phone number must be exactly 11 digits";
+    }
+    if (!formData.department) {
+      return "Please select a department";
+    }
+    if (formData.universityIdPhoto && !formData.universityIdPhoto.type.startsWith("image/")) {
+      return "Invalid file type. Please upload an image";
+    }
+    return "";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const err = validate();
+    if (err) {
+      setError(err);
+      return;
+    }
+
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      data.append(key, formData[key]);
+    });
 
     try {
-      await axios.post('/api/users/register', submissionData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      await API.post("/users/register", data, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      // Handle successful registration (e.g., redirect to login)
-      alert('Registration successful! Please log in.');
+      alert("Registration successful!");
     } catch (err) {
-      const message =
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : 'An unexpected error occurred.';
-      setError(message);
-    } finally {
-      setLoading(false);
+      setError(err.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
-    <div>
-      <h1>Register for AUST Blood Donor Platform</h1>
-      <p>Sign up with your @aust.edu email and upload your student/teacher ID for verification</p>
+    <form onSubmit={handleSubmit}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <input
+        type="text"
+        placeholder="Full Name"
+        value={formData.fullName}
+        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email (@gmail.com only)"
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        required
+      />
 
-      {error && <p style={{ color: 'red', border: '1px solid red', padding: '10px' }}>{error}</p>}
+      <select
+        value={formData.bloodGroup}
+        onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value })}
+        required
+      >
+        <option value="">Select Blood Group</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="O+">O+</option>
+      </select>
 
-      <form onSubmit={submitHandler}>
-        {/* --- Full Name --- */}
-        <input type="text" name="fullName" placeholder="Enter your full name" onChange={handleChange} required />
+      <select
+        value={formData.department}
+        onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+        required
+      >
+        <option value="">Select Department</option>
+        <option value="CSE">CSE</option>
+        <option value="EEE">EEE</option>
+        <option value="ME">ME</option>
+        <option value="CE">CE</option>
+        <option value="IPE">IPE</option>
+        <option value="BBA">BBA</option>
+      </select>
 
-        {/* --- AUST Email --- */}
-        <input type="email" name="email" placeholder="your.name@aust.edu" onChange={handleChange} required />
+      <input
+        type="text"
+        placeholder="Position (e.g., Assistant Professor)"
+        value={formData.position}
+        onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+        required
+      />
 
-        {/* --- Password --- */}
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        
-        {/* --- Blood Group (Dropdown) --- */}
-        <select name="bloodGroup" onChange={handleChange} required>
-            <option value="">Select your blood group</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-        </select>
-        
-        {/* --- Department (CHANGED to Dropdown) --- */}
-        <select name="department" onChange={handleChange} required>
-            <option value="">Select Department</option>
-            <option value="CSE">CSE</option>
-            <option value="EEE">EEE</option>
-            <option value="BBA">BBA</option>
-            <option value="Arch">Architecture</option>
-            <option value="ME">Mechanical Engineering</option>
-            <option value="IPE">Industrial & Production Engineering</option>
-        </select>
+      <input
+        type="text"
+        placeholder="Current Semester"
+        value={formData.currentSemester}
+        onChange={(e) => setFormData({ ...formData, currentSemester: e.target.value })}
+      />
 
-        {/* --- Position (CHANGED Label and Placeholder) --- */}
-        <input type="text" name="position" placeholder="e.g., Student or Assistant Professor" onChange={handleChange} required />
+      <select
+        value={formData.gender}
+        onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+        required
+      >
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
 
-        {/* --- Current Semester --- */}
-        <input type="text" name="currentSemester" defaultValue="Fall 2024" onChange={handleChange} required />
-        
-        {/* --- Gender (Dropdown) --- */}
-        <select name="gender" onChange={handleChange} required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
+      <input
+        type="text"
+        placeholder="Present Address"
+        value={formData.presentAddress}
+        onChange={(e) => setFormData({ ...formData, presentAddress: e.target.value })}
+        required
+      />
 
-        {/* --- Present Address --- */}
-        <input type="text" name="presentAddress" placeholder="Enter your Present Address" onChange={handleChange} required />
-        
-        {/* --- Phone Number --- */}
-        <input type="text" name="phoneNumber" placeholder="Enter active Phone number" onChange={handleChange} required />
-        
-        {/* --- University ID Photo --- */}
-        <input type="file" name="universityIdPhoto" onChange={handleFileChange} required />
+      <input
+        type="text"
+        placeholder="Phone Number"
+        value={formData.phone}
+        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+        required
+      />
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit Registration'}
-        </button>
-      </form>
-    </div>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) =>
+          setFormData({ ...formData, universityIdPhoto: e.target.files[0] })
+        }
+        required
+      />
+
+      <button type="submit">Submit Registration</button>
+    </form>
   );
 };
 
