@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const userRoutes = require('./routes/userRoutes');
+const requestRoutes = require('./routes/requestRoutes'); //added this for the route for blood request.
 
 
 app.get('/', (req, res) => {
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRoutes);
+app.use('/api/requests', requestRoutes); // this is for the api call of blood request.
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
