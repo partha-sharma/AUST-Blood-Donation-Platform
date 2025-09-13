@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import EligibilityTab from '../components/dashboard/EligibilityTab';
 import RequestMailsTab from '../components/dashboard/RequestMailsTab';
@@ -13,6 +14,11 @@ function DashboardPage() {
 
   return (
     <div className="dashboard-container">
+        <div className="dashboard-actions">
+  <Link to="/request-blood" className="action-button">
+    Post a New Blood Request
+  </Link>
+</div>
       <nav className="dashboard-nav">
         <button className={activeTab === 'eligibility' ? 'active' : ''} onClick={() => setActiveTab('eligibility')}>
           Eligibility Calendar
