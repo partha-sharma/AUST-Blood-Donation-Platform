@@ -5,11 +5,10 @@ import InfoSection from './InfoSection';
 import CompatibilitySection from './CompatibilitySection';
 import ProcessSection from './ProcessSection';
 import AwardsSection from './AwardsSection';
-// Import the other sections once you've created them
-// import NewsSection from './NewsSection';
-// import ContactSection from './ContactSection';
-// import CTASection from './CTASection';
-// import Footer from './Footer';
+import NewsSection from './NewsSection';
+import ContactSection from './ContactSection';
+import CTASection from './CTASection';
+import Footer from './Footer';
 
 const Home = () => {
   return (
@@ -20,12 +19,10 @@ const Home = () => {
       <CompatibilitySection />
       <ProcessSection />
       <AwardsSection />
-      {/* 
-        <NewsSection />
-        <ContactSection />
-        <CTASection />
-        <Footer /> 
-      */}
+      <NewsSection />
+      <ContactSection />
+      <CTASection />
+      <Footer /> 
     </div>
   );
 };
