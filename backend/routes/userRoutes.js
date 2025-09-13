@@ -1,35 +1,18 @@
-// Start of code to paste
-
-import express from 'express';
+const express = require('express');
 const router = express.Router();
+const { registerUser } = require('../controllers/userController');
+const upload = require('../middleware/uploadMiddleware');
 
-// --- 1. Import all necessary controller functions and middleware ---
+router.post('/register', (req, res, next) => {
+  upload(req, res, (err) => {
+    if (err) {
+      // This catches multer-specific errors (e.g., file type, size)
+      res.status(400).json({ message: err });
+    } else {
+      // If upload is successful, proceed to the controller
+      registerUser(req, res, next);
+    }
+  });
+});
 
-// Import controller functions for both login and registration
-import { loginUser, registerUser } from '../controllers/userController.js';
-
-// Import the specialized middleware for handling file uploads
-import upload from '../middleware/uploadMiddleware.js';
-
-// --- 2. Define the API Routes ---
-
-/**
- * @route   POST /api/users/login
- * @desc    Authenticates a user and returns a token
- * @access  Public
- */
-router.post('/login', loginUser);
-
-/**
- * @route   POST /api/users/register
- * @desc    Registers a new user
- * @access  Public
- */
-// This route is special. It first runs the 'upload' middleware to handle the
-// file, and only if that is successful does it proceed to the 'registerUser' controller.
-router.post('/register', upload, registerUser);
-
-// --- 3. Export the router to be used in server.js ---
-export default router;
-
-// End of code to paste
+module.exports = router;
