@@ -12,20 +12,30 @@ const Login = () => {
   const { email, password } = formData;
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
-      
-      console.log('Login successful!', res.data); // For now, we just log the data
-      
-      alert('Login successful! Check the console.'); 
+const onSubmit = async e => {
+  e.preventDefault();
+  setError('');
+  try {
+    const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
+    
+    // --- START OF NEW CODE ---
+    
+    // 1. Save the token and user info to localStorage
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
+    
+    // 2. Alert the user of success.
+    alert('Login successful! You can now create a request.'); 
 
-    } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred.');
-    }
-  };
+    // 3. You could redirect the user here, for example:
+    // window.location.href = '/newsfeed'; // Simple redirect
+    
+    console.log('Login successful!', res.data); // Keep this for debugging if you like
+
+  } catch (err) {
+    setError(err.response?.data?.message || 'An error occurred.');
+  }
+};
   
   // Using similar styles to the Register page for consistency
   const styles = {
