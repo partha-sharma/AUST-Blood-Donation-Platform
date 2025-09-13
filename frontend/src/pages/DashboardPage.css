@@ -1,0 +1,209 @@
+/* --- Root Variables for Easy Customization --- */
+:root {
+    --primary-red: #d9534f;
+    --success-green: #5cb85c;
+    --info-blue: #337ab7;
+    --dark-text: #333333;
+    --light-text: #666666;
+    --background-light: #f9fafb;
+    --background-white: #ffffff;
+    --border-color: #e5e7eb;
+    --spacing-md: 1.5rem;
+    --spacing-sm: 1rem;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Main Dashboard Layout --- */
+.dashboard-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: var(--spacing-sm);
+    background-color: var(--background-light);
+    border-radius: var(--border-radius);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* --- Tab Navigation --- */
+.dashboard-nav {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: var(--spacing-md);
+    /* Allows horizontal scrolling on small screens */
+    overflow-x: auto;
+    /* Hides the scrollbar visually on browsers that support it */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;    /* Firefox */
+}
+.dashboard-nav::-webkit-scrollbar { display: none; } /* Chrome, Safari, and Opera */
+
+
+.dashboard-nav button {
+    padding: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--light-text);
+    position: relative;
+    font-weight: 600;
+    white-space: nowrap; /* Prevents button text from wrapping */
+    transition: color 0.2s ease-in-out;
+}
+
+.dashboard-nav button:hover {
+    color: var(--dark-text);
+}
+
+.dashboard-nav button.active {
+    color: var(--primary-red);
+    border-bottom: 3px solid var(--primary-red);
+}
+
+.notification-dot {
+    position: absolute;
+    top: 10px;
+    right: 5px; /* Adjusted for better placement */
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notification-dot.red { background-color: var(--primary-red); }
+.notification-dot.green { background-color: var(--success-green); }
+
+
+/* --- Main Content Area --- */
+.dashboard-content {
+    background-color: var(--background-white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+}
+
+.info-box h3, .info-box h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.info-box .status-message {
+    padding: 1rem;
+    border-radius: 5px;
+    line-height: 1.6;
+}
+.status-message.eligible {
+    background-color: #f0fdf4; /* Lighter Green */
+    border-left: 5px solid var(--success-green);
+    color: #166534; /* Darker Green Text */
+}
+.info-box ul {
+    list-style: none;
+    padding-left: 0;
+    color: var(--light-text);
+}
+.info-box li {
+    padding: 0.5rem 0;
+}
+.info-box li::before {
+    content: "•";
+    color: var(--primary-red);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+}
+
+/* --- Generic Mail Card Style --- */
+.mail-card {
+    background-color: var(--background-white);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--info-blue);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.mail-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+.card-body p { margin: 0.5rem 0; color: var(--light-text); }
+.card-body p strong { color: var(--dark-text); }
+
+.tag { padding: 4px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: white; }
+.new-tag { background-color: var(--success-green); }
+.repost-tag { background-color: var(--primary-red); }
+
+.view-details-btn {
+    background-color: var(--dark-text);
+    color: white; border: none; padding: 0.6rem 1.2rem;
+    border-radius: 5px; cursor: pointer; font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+.view-details-btn:hover { background-color: #555; }
+
+/* Accepted Donation Card Specifics */
+.mail-card.accepted { border-left-color: var(--success-green); }
+.contact-details { margin-top: 1rem; padding: 1rem; background-color: #f9fafb; border-radius: 5px; }
+.contact-details h4 { margin: 0 0 0.5rem 0; }
+.contact-details p { color: var(--light-text); font-size: 0.9rem; }
+
+/* --- Responsive Media Queries --- */
+
+/* For Tablets (e.g., iPad) */
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin: 1rem;
+        padding: 0;
+    }
+    .dashboard-content {
+        padding: var(--spacing-sm);
+    }
+    .view-details-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* For Mobile Phones */
+@media (max-width: 480px) {
+    .dashboard-nav {
+        margin-bottom: var(--spacing-sm);
+    }
+    .dashboard-nav button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+    .notification-dot {
+        height: 16px;
+        width: 16px;
+        font-size: 0.65rem;
+        top: 8px;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .view-details-btn {
+        margin-top: 0.5rem;
+    }
+}

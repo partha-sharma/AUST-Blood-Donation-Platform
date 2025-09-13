@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import Login from './components/Login';
+import DashboardPage from './pages/DashboardPage';
 import Register from './components/Register';
 import Newsfeed from './components/Newsfeed';
 
@@ -28,6 +29,8 @@ return (
           <Route path="/register" element={<Register />} />
            <Route path="/about" element={<About />} /> 
           <Route path="/newsfeed" element={<Newsfeed />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+       
         </Routes>
       </main>
     </Router>
