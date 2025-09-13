@@ -10,6 +10,7 @@ import Home from './components/Home';
 import About from './components/About';
 import Login from './components/Login';
 import DashboardPage from './pages/DashboardPage';
+import RequestBloodPage from './pages/RequestBloodPage'; 
 import Register from './components/Register';
 import Newsfeed from './components/Newsfeed';
 
@@ -30,7 +31,8 @@ return (
            <Route path="/about" element={<About />} /> 
           <Route path="/newsfeed" element={<Newsfeed />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-       
+   <Route path="/request-blood" element={<RequestBloodPage />} /> {/* <-- Add this route */}
+
         </Routes>
       </main>
     </Router>
