@@ -1,7 +1,10 @@
 import React from 'react';
 // We will create these components next
- import HeroSection from './HeroSection';
+import HeroSection from './HeroSection';
 import InfoSection from './InfoSection';
+import CompatibilitySection from './CompatibilitySection';
+import ProcessSection from './ProcessSection';
+import AwardsSection from './AwardsSection';
 // ... and so on
 
 const Home = () => {
