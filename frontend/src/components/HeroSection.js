@@ -1,5 +1,5 @@
 import React from 'react';
-// You would replace 'path/to/your/background-image.jpg' with an actual image URL or imported image
+
 const heroBgImage = 'https://aust.edu/storage/files/n1PcUDYT6dpguLymdm1TICUm2vAvwZaP7zKYyU6w.jpeg'; 
 
 const HeroSection = () => {
