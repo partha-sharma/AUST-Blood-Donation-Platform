@@ -6,7 +6,6 @@ import CompatibilitySection from './CompatibilitySection';
 import ProcessSection from './ProcessSection';
 import AwardsSection from './AwardsSection';
 import NewsSection from './NewsSection';
-import ContactSection from './ContactSection';
 import CTASection from './CTASection';
 import Footer from './Footer';
 
@@ -20,7 +19,6 @@ const Home = () => {
       <ProcessSection />
       <AwardsSection />
       <NewsSection />
-      <ContactSection />
       <CTASection />
       <Footer /> 
     </div>
