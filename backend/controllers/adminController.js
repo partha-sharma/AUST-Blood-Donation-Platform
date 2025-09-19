@@ -22,5 +22,16 @@ const approveUser = async (req, res) => {
         res.status(404).json({ message: 'User not found' });
     }
 };
+const rejectUser = async (req, res) => {
+    const user = await User.findById(req.params.id);
 
-module.exports = { getPendingUsers, approveUser };
+    if (user) {
+        // Here you would also handle deleting their uploaded photo from the server
+        // For now, we'll just delete the user document
+        await user.deleteOne();
+        res.json({ message: 'User rejected and removed successfully.' });
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
+};
+module.exports = { getPendingUsers, approveUser, rejectUser };
