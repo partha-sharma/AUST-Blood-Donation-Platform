@@ -4,6 +4,22 @@ const Request = require('../models/Request');
 // @desc    Create a new blood request
 // @route   POST /api/requests
 // @access  Private
+
+const getRequests = async (req, res) => {
+  try {
+    // Find all requests, sort by newest first (-1 means descending)
+    // Then, populate the 'user' field with details from the User model
+    const requests = await Request.find({})
+      .sort({ createdAt: -1 })
+      .populate('user', 'fullName department yearPosition'); // <-- IMPORTANT: This joins the user data
+
+    res.status(200).json({ success: true, data: requests });
+  } catch (error) {
+    console.error('Get Requests Error:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
 const createRequest = async (req, res) => {
   try {
     const { bloodGroup, quantity, hospital, message, agreedToProvideRefreshments } = req.body;
@@ -37,4 +53,5 @@ const createRequest = async (req, res) => {
 
 module.exports = {
   createRequest,
+  getRequests,
 };
