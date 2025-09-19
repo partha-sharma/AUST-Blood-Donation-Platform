@@ -1,12 +1,12 @@
 // frontend/src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; 
+import { useNavigate } from 'react-router-dom';   // <-- Add for redirection
+import { AuthContext } from '../context/AuthContext'; // <-- Import your context
 import axios from 'axios';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const { login } = useContext(AuthContext); // <-- Get the login function from context
+  const navigate = useNavigate(); // <-- Hook for navigation
   const [error, setError] = useState('');
 
   const { email, password } = formData;
@@ -16,21 +16,14 @@ const onSubmit = async e => {
   e.preventDefault();
   setError('');
   try {
-    const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
-    
-    // --- START OF NEW CODE ---
-    
-    // 1. Save the token and user info to localStorage
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('user', JSON.stringify(res.data.user));
-    
-    // 2. Alert the user of success.
-    alert('Login successful! You can now create a request.'); 
+    const data = await login(email, password); // <-- Use context's login function
 
-    // 3. You could redirect the user here, for example:
-    // window.location.href = '/newsfeed'; // Simple redirect
-    
-    console.log('Login successful!', res.data); // Keep this for debugging if you like
+    // Your idea: Special redirect for admin
+      if (data.user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard'); // Redirect normal users to their dashboard
+      }
 
   } catch (err) {
     setError(err.response?.data?.message || 'An error occurred.');
