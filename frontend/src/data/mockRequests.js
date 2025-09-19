@@ -1,49 +1,42 @@
 // frontend/src/data/mockRequests.js
 
+// The structure now mirrors the data coming from our backend API.
 export const mockBloodRequests = [
   {
-    id: 1,
+    _id: 'mock_1', // Using string IDs to be consistent with MongoDB
     bloodGroup: 'B+',
-    postedBy: 'Sarah Khan',
-    department: 'CSE',
-    year: '3rd Year',
-    bagsNeeded: 1,
-    bagsRemaining: 1,
-    location: 'AUST Medical Center',
-    details: 'Emergency surgery needed for my father. Any help would be greatly appreciated.',
-    postedAgo: '366d',
-    isRepost: false,
-    isUrgent: false,
-    responded: true, // You've already responded to this one
+    user: {
+      fullName: 'Sarah Khan',
+      department: 'CSE',
+      yearPosition: '3rd Year',
+    },
+    quantity: 1,
+    hospital: 'AUST Medical Center',
+    message: 'Emergency surgery needed for my father. Any help would be greatly appreciated.',
+    // We'll leave out timestamps (createdAt) for mocks to differentiate them.
   },
   {
-    id: 2,
+    _id: 'mock_2',
     bloodGroup: 'O-',
-    postedBy: 'Mohammad Ali',
-    department: 'EEE',
-    year: '2nd Year',
-    bagsNeeded: 3,
-    bagsRemaining: 3,
-    location: 'Square Hospital',
-    details: 'Thalassemia patient needs regular transfusion. Please help if eligible.',
-    postedAgo: '366d',
-    isRepost: false,
-    isUrgent: false,
-    responded: false,
+    user: {
+      fullName: 'Mohammad Ali',
+      department: 'EEE',
+      yearPosition: '2nd Year',
+    },
+    quantity: 3,
+    hospital: 'Square Hospital',
+    message: 'Thalassemia patient needs regular transfusion. Please help if eligible.',
   },
   {
-    id: 3,
+    _id: 'mock_3',
     bloodGroup: 'A+',
-    postedBy: 'Fatima Ahmed',
-    department: 'BBA',
-    year: '4th Year',
-    bagsNeeded: 1,
-    bagsRemaining: 1,
-    location: 'Dhaka Medical College',
-    details: 'Scheduled surgery next week. Thank you for considering.',
-    postedAgo: '368d',
-    isRepost: true, // This is a repost
-    isUrgent: true, // Reposts are marked urgent
-    responded: false,
+    user: {
+      fullName: 'Fatima Ahmed',
+      department: 'BBA',
+      yearPosition: '4th Year',
+    },
+    quantity: 1,
+    hospital: 'Dhaka Medical College',
+    message: 'Scheduled surgery next week. Thank you for considering.',
   },
 ];
