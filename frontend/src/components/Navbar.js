@@ -1,8 +1,10 @@
 // frontend/src/components/Navbar.js
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+     const { user, logout } = useContext(AuthContext);
     // Basic inline styles for now. We can move these to a CSS file later.
     const navStyle = {
         backgroundColor: '#fff',
@@ -58,23 +60,36 @@ const Navbar = () => {
 
     // For now, we'll hardcode the logged-out view.
     // Later, the AuthContext will tell us if a user is logged in.
-    const isLoggedIn = false;
-
-    return (
+    //const isLoggedIn = false;
+ return (
         <nav style={navStyle}>
             <Link to="/" style={logoStyle}>❤️ AUST Blood Donor</Link>
 
             <div style={linkContainerStyle}>
+                {/* Public links that are always visible */}
                 <Link to="/newsfeed" style={linkStyle}>Newsfeed</Link>
                 <Link to="/about" style={linkStyle}>About</Link>
-                {/* Add other public links here */}
 
-                {isLoggedIn ? (
+                {user ? (
+                    // --- Logged In View ---
                     <>
-                        <span>Welcome, User!</span>
-                        <button style={buttonStyle}>Logout</button>
+                        <Link to="/dashboard" style={linkStyle}>My Dashboard</Link>
+
+                        {/* Only show Admin Panel link if the user's role is 'admin' */}
+                        {user.role === 'admin' && (
+                            <Link to="/admin" style={{ ...linkStyle, color: '#d9534f', fontWeight: 'bold' }}>Admin Panel</Link>
+                        )}
+                        
+                        <span style={{ margin: '0 15px', color: '#555' }}>
+                            Hi, {user.fullName}
+                        </span>
+
+                        <button onClick={logout} style={buttonStyle}>
+                            Logout
+                        </button>
                     </>
                 ) : (
+                    // --- Logged Out View ---
                     <>
                         <Link to="/login" style={buttonStyle}>Login</Link>
                         <Link to="/register" style={primaryButtonStyle}>Register</Link>
