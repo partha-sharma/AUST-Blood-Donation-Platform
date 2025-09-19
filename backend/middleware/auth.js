@@ -2,20 +2,43 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Middleware to verify token
+// YOUR EXISTING 'protect' FUNCTION IS PERFECT. KEEP IT.
 const protect = async (req, res, next) => {
-    // ... (Code to verify JWT and find user) ...
-    // ... (Attach user to req object: req.user = user) ...
-    next();
+  let token;
+
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.userId).select('-password');
+      
+      if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Not authorized, user not found' });
+      }
+      next();
+    } catch (error) {
+      res.status(401).json({ success: false, message: 'Not authorized, token failed' });
+    }
+  }
+
+  if (!token) {
+    res.status(401).json({ success: false, message: 'Not authorized, no token' });
+  }
 };
 
-// Middleware to check for admin role
+// --- ADD THIS NEW FUNCTION ---
+// Middleware to check for admin role AFTER 'protect' has run
 const admin = (req, res, next) => {
+    // Because 'protect' runs first, we can safely assume 'req.user' exists here.
     if (req.user && req.user.role === 'admin') {
-        next();
+        next(); // User is an admin, proceed.
     } else {
-        res.status(401).json({ message: 'Not authorized as an admin' });
+        res.status(403).json({ success: false, message: 'Not authorized as an admin' }); // 403 Forbidden is more appropriate here
     }
 };
 
-module.exports = { protect, admin };
+// --- UPDATE YOUR EXPORTS TO INCLUDE BOTH ---
+module.exports = { 
+    protect, 
+    admin 
+};
