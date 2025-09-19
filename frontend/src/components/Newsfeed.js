@@ -1,19 +1,54 @@
 // frontend/src/components/Newsfeed.js
-import React, { useState } from 'react';
-import { mockBloodRequests } from '../data/mockRequests';
-import RequestCard from './RequestCard'; //for 
-import CreateRequestModal from './CreateRequestModal'; //for blood request.
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import RequestCard from './RequestCard';
+import CreateRequestModal from './CreateRequestModal';
 
 const Newsfeed = () => {
-  const [requests, setRequests] = useState(mockBloodRequests);
-  const [isModalOpen, setIsModalOpen] = useState(false); //state for modal
+  const [requests, setRequests] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Function to handle adding the new request to the list
+  // New states for loading and error handling
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // This function will be called by the modal when a new request is created
   const handleRequestCreated = (newRequest) => {
-    // Here, we prepend the new request to our existing list
-    // Later, you'll want to refetch the list instead of just adding it
-    setRequests([newRequest, ...requests]); 
+    // Add the new request to the top of the list
+    // Note: For a more robust app, you might want to refetch all requests instead
+    setRequests([newRequest, ...requests]);
   };
+
+  // useEffect to fetch data when the component mounts
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError("You must be logged in to view requests.");
+          setLoading(false);
+          return;
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        
+        const res = await axios.get('http://localhost:5000/api/requests', config);
+        setRequests(res.data.data);
+
+      } catch (err) {
+        setError('Failed to fetch blood requests. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRequests();
+  }, []); // The empty array [] means this effect runs only once
 
   const headerStyle = {
     display: 'flex',
@@ -39,17 +74,17 @@ const Newsfeed = () => {
           <h1 style={{ fontSize: '24px', marginBottom: '5px' }}>Blood Donation Requests</h1>
           <p>Connect with donors and help save lives in our campus community</p>
         </div>
-        {/* BUTTON TO OPEN MODAL */}
         <button onClick={() => setIsModalOpen(true)} style={createButtonStyle}>Create Request</button>
       </header>
 
       <div>
-        {requests.map(request => (
-          <RequestCard key={request.id} request={request} />
+        {loading && <p>Loading requests...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {!loading && !error && requests.map(request => (
+          <RequestCard key={request._id} request={request} /> // Use _id from MongoDB
         ))}
       </div>
 
-      {/* RENDER THE MODAL */}
       <CreateRequestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

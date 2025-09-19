@@ -13,7 +13,7 @@ const RequestCard = ({ request }) => {
         <div>
           <h3>{request.bloodGroup} Blood Needed</h3>
           <p className={styles.posterInfo}>
-            Posted by {request.postedBy} ({request.department} • {request.year}) • {request.postedAgo} ago
+            Posted by {request.user.fullName} ({request.user.department} • {request.user.yearPosition})
           </p>
         </div>
         <div className={styles.tags}>
@@ -25,16 +25,16 @@ const RequestCard = ({ request }) => {
       <div className={styles.body}>
         <div className={styles.infoItem}>
           <Droplet size={20} />
-          <span>{request.bagsRemaining} bags still needed</span>
+          <span>{request.quantity} bags still needed</span>
         </div>
         <div className={styles.infoItem}>
           <MapPin size={20} />
-          <span>{request.location}</span>
+          <span>{request.hospital}</span>
         </div>
       </div>
 
       <p className={styles.details}>
-        {request.details}
+        {request.message}
       </p>
 
       <div className={styles.footer}>
