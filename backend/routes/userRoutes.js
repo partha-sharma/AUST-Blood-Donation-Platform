@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/userController');
+const { registerUser, loginUser   } = require('../controllers/userController');
 const upload = require('../middleware/upload');
-
+//const auth = require('../middleware/auth');
 
 router.post('/register', upload.single('universityIdPhoto'), registerUser);
 // When a POST request comes to "/register", run the registerUser function

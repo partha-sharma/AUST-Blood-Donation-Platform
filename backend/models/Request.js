@@ -30,6 +30,11 @@ const requestSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+    acceptedBy: { // <-- NEW FIELD
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
   agreedToProvideRefreshments: {
     type: Boolean,
     required: [true, 'You must agree to the refreshments and transport cost terms.']
