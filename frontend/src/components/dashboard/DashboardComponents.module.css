@@ -1,0 +1,157 @@
+/* frontend/src/components/dashboard/DashboardComponents.module.css */
+.card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.statusEligible {
+  background-color: #eaf7ed;
+  color: #2a6a3b;
+  padding: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.statusNotEligible {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.infoSection {
+  margin-bottom: 20px;
+}
+
+.infoSection p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.guidelines {
+  font-size: 14px;
+  color: #666;
+}
+.guidelines h4 {
+  margin-top: 0;
+  color: #333;
+}
+.guidelines ul {
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+/* Request/Accepted Card Styles */
+.listHeader {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.listSubheader {
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+
+.requestCard {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-left: 5px solid #d9534f;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.requestInfo h4 {
+    margin: 10px 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.requestInfo p, .requestInfo span {
+    color: #555;
+    font-size: 0.95rem;
+    margin: 0;
+    display: block;
+}
+
+.bloodGroupTag {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #d9534f;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.newTag {
+    background-color: #f0ad4e;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 4px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.viewDetailsBtn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.emptyMessage {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+}
+
+/* Accepted Mail Specifics */
+.acceptedCard {
+    border-left-color: #28a745;
+}
+
+.greenTag {
+    background-color: #28a745 !important;
+}
+
+.contactDetails {
+    background-color: #f7f9fc;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    padding: 15px;
+    font-size: 0.9rem;
+    align-self: center;
+}
+.contactDetails h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+.contactDetails p {
+    margin: 5px 0;
+}
