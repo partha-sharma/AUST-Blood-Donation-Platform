@@ -1,0 +1,79 @@
+/* frontend/src/components/Dashboard.module.css */
+
+.dashboardContainer {
+    max-width: 960px;
+    margin: 100px auto 40px auto;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+.tabButton {
+    flex: 1;
+    padding: 18px 20px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    border-right: 1px solid #eee;
+}
+
+.tabButton:last-child {
+    border-right: none;
+}
+
+.tabButton:hover {
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.tabButton.active {
+    background-color: #fff;
+    color: #c0392b;
+    font-weight: 600;
+    box-shadow: inset 0 -3px 0 #c0392b;
+}
+
+.tabContent {
+    padding: 25px;
+}
+
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background-color: #d9534f;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badgeGreen {
+    background-color: #28a745;
+}
+
+.error {
+    color: #c0392b;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+}
