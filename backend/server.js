@@ -20,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 const userRoutes = require('./routes/userRoutes');
 const requestRoutes = require('./routes/requestRoutes'); //added this for the route for blood request.
 const adminRoutes = require('./routes/adminRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');// <-- IMPORT NEW ROUTE
+
 
 app.get('/', (req, res) => {
   res.json({ message: 'AUST Blood Donor API is running!' });
@@ -28,6 +30,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/requests', requestRoutes); // this is for the api call of blood request.
 app.use('/api/admin', adminRoutes);
+app.use('/api/dashboard', dashboardRoutes); 
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
