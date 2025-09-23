@@ -19,7 +19,10 @@ const getMatchingRequests = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate('user', 'fullName department yearPosition');
 
-    res.status(200).json({ success: true, data: requests });
+    // Also filter here for consistency
+    const validRequests = requests.filter(request => request.user);
+
+    res.status(200).json({ success: true, data: validRequests }); // Send the filtered list
   } catch (error) {
     console.error('Get Matching Requests Error:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
@@ -28,13 +31,14 @@ const getMatchingRequests = async (req, res) => {
 
 const getRequests = async (req, res) => {
   try {
-    // Find all requests, sort by newest first (-1 means descending)
-    // Then, populate the 'user' field with details from the User model
     const requests = await Request.find({})
       .sort({ createdAt: -1 })
-      .populate('user', 'fullName department yearPosition'); // <-- IMPORTANT: This joins the user data
+      .populate('user', 'fullName department yearPosition');
 
-    res.status(200).json({ success: true, data: requests });
+    // Filter out requests where the user might have been deleted
+    const validRequests = requests.filter(request => request.user);
+
+    res.status(200).json({ success: true, data: validRequests }); // Send the filtered list
   } catch (error) {
     console.error('Get Requests Error:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
