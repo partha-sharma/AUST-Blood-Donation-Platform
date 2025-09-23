@@ -1,5 +1,6 @@
 // frontend/src/components/Dashboard.js
 import React, { useState } from 'react';
+import RequestMails from './dashboard/RequestMails';
 
 // We will create these components in the next steps
 // import EligibilityCalendar from './dashboard/EligibilityCalendar';
@@ -23,8 +24,7 @@ const Dashboard = () => {
         // return <EligibilityCalendar />;
         return <div>Eligibility Calendar Content Coming Soon...</div>;
       case 'Request Mails':
-        // return <RequestMails />;
-        return <div>Request Mails Content Coming Soon...</div>;
+        return <RequestMails />;
       case 'Accepted Mails':
         // return <AcceptedMails />;
         return <div>Accepted Mails Content Coming Soon...</div>;
