@@ -107,7 +107,7 @@ const Register = () => {
     try {
       // Send the request to the backend with axios
       const res = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "/api/users/register", // <-- Changed line
         registrationData,
         {
           headers: {

@@ -23,7 +23,7 @@ const CreateRequestModal = ({ isOpen, onClose, onCreated }) => {
     e.preventDefault();
     
     // This is a placeholder. In a real app, you would get the token from your auth context/storage.
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('authToken'); 
     if (!token) {
       alert("You must be logged in to create a request.");
       return;
@@ -36,7 +36,7 @@ const CreateRequestModal = ({ isOpen, onClose, onCreated }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const res = await axios.post('http://localhost:5000/api/requests', formData, config);
+      const res = await axios.post('/api/requests', formData, config);
       
       alert('Request created successfully!');
       onCreated(res.data.data); // Pass new request to parent

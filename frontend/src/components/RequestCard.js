@@ -12,9 +12,10 @@ const RequestCard = ({ request }) => {
         <Heart color="#d9534f" size={28} />
         <div>
           <h3>{request.bloodGroup} Blood Needed</h3>
-          <p className={styles.posterInfo}>
-            Posted by {request.user.fullName} ({request.user.department} • {request.user.yearPosition})
-          </p>
+            <p className={styles.posterInfo}>
+              {/* Use optional chaining to prevent crash if user is null */}
+              Posted by {request.user?.fullName || 'an unknown user'} ({request.user?.department} • {request.user?.yearPosition})
+            </p>
         </div>
         <div className={styles.tags}>
           {request.isRepost && <span className={`${styles.tag} ${styles.repostTag}`}>REPOSTED</span>}

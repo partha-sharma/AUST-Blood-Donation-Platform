@@ -23,7 +23,7 @@ const Newsfeed = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('authToken');
         if (!token) {
           setError("You must be logged in to view requests.");
           setLoading(false);
@@ -36,7 +36,7 @@ const Newsfeed = () => {
           },
         };
         
-        const res = await axios.get('http://localhost:5000/api/requests', config);
+        const res = await axios.get('/api/requests', config);
         setRequests(res.data.data);
 
       } catch (err) {
