@@ -5,6 +5,27 @@ const Request = require('../models/Request');
 // @route   POST /api/requests
 // @access  Private
 
+const getMatchingRequests = async (req, res) => {
+  try {
+    if (!req.user || !req.user.bloodGroup) {
+      return res.status(400).json({ success: false, message: 'User blood group not found.' });
+    }
+
+    // Find requests that match the user's blood group and are not fulfilled yet.
+    const requests = await Request.find({
+      bloodGroup: req.user.bloodGroup,
+      isFulfilled: false,
+    })
+      .sort({ createdAt: -1 })
+      .populate('user', 'fullName department yearPosition');
+
+    res.status(200).json({ success: true, data: requests });
+  } catch (error) {
+    console.error('Get Matching Requests Error:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
 const getRequests = async (req, res) => {
   try {
     // Find all requests, sort by newest first (-1 means descending)
@@ -54,4 +75,5 @@ const createRequest = async (req, res) => {
 module.exports = {
   createRequest,
   getRequests,
+  getMatchingRequests,
 };
