@@ -1,6 +1,7 @@
 // frontend/src/components/Dashboard.js
 import React, { useState } from 'react';
 import EligibilityCalendar from './dashboard/EligibilityCalendar';
+import DonationHistory from './dashboard/DonationHistory';
 
 // We will create these components in the next steps
 // import EligibilityCalendar from './dashboard/EligibilityCalendar';
@@ -23,8 +24,7 @@ const Dashboard = () => {
       case 'Eligibility Calendar':
         return <EligibilityCalendar />;
       case 'Donation History':
-        // return <DonationHistory />;
-        return <div>Donation History Content Coming Soon...</div>;
+        return <DonationHistory />; // <-- REPLACE THE DIV
       default:
         return null;
     }

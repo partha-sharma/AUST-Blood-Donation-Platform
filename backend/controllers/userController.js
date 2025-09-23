@@ -2,6 +2,7 @@
 
 const User = require("../models/User");
 const { generateToken } = require("../utils/jwt");
+const DonationOffer = require('../models/DonationOffer');
 
 const getEligibilityStatus = async (req, res) => {
   try {
@@ -148,8 +149,28 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getMyOffers = async (req, res) => {
+    try {
+        const offers = await DonationOffer.find({ donor: req.user._id })
+            .sort({ createdAt: -1 })
+            .populate({ // We populate the request details...
+                path: 'request',
+                populate: { // ...and the user who created that request.
+                    path: 'user',
+                    select: 'fullName department'
+                }
+            });
+
+        res.status(200).json({ success: true, data: offers });
+    } catch (error) {
+        console.error('Get My Offers Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
 module.exports = {
   registerUser,
   loginUser,
-  getEligibilityStatus
+  getEligibilityStatus,
+  getMyOffers,
 };
