@@ -3,6 +3,35 @@
 const User = require("../models/User");
 const { generateToken } = require("../utils/jwt");
 
+const getEligibilityStatus = async (req, res) => {
+  try {
+    // The full user object is attached by the 'protect' middleware
+    const user = req.user;
+    
+    // Set a default donation date to the account creation date if they've never donated
+    const lastDonationDate = user.lastDonation || user.createdAt;
+
+    const eligibilityDate = new Date(lastDonationDate);
+    eligibilityDate.setDate(eligibilityDate.getDate() + 120); // Add 120 days
+
+    const isEligible = new Date() > eligibilityDate;
+
+    res.status(200).json({
+      success: true,
+      data: {
+        isEligible,
+        lastDonation: user.lastDonation, // Send null if they haven't donated yet
+        nextEligibleDate: eligibilityDate,
+        registeredAt: user.createdAt
+      }
+    });
+
+  } catch (error) {
+    console.error('Get Eligibility Error:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
 const registerUser = async (req, res) => {
   try {
     // 1. Destructure all the expected fields from the form body.
@@ -122,4 +151,5 @@ const loginUser = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
+  getEligibilityStatus
 };
