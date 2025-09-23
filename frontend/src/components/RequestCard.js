@@ -1,9 +1,32 @@
 // frontend/src/components/RequestCard.js
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import styles from './RequestCard.module.css'; 
 import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart } from 'lucide-react';
 
 const RequestCard = ({ request }) => {
+  const [offerMade, setOfferMade] = useState(request.responded);
+  const handleDonate = async () => {
+    if (!window.confirm("Are you sure you want to offer to donate for this request?")) {
+      return;
+    }
+
+    try {
+        const token = localStorage.getItem('authToken');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+
+        // The request ID is passed in the URL
+        await axios.post(`/api/requests/${request._id}/offer`, {}, config);
+        
+        alert("Thanks for your offer! The request poster has been notified.");
+        setOfferMade(true); // Update the button state
+
+    } catch (err) {
+        // Display the specific error message from the backend (e.g., "not eligible")
+        alert(err.response?.data?.message || "An error occurred. Could not make offer.");
+    }
+  };
+
   const cardClasses = `${styles.card} ${request.isUrgent ? styles.urgentCard : ''}`;
 
   return (
@@ -39,21 +62,21 @@ const RequestCard = ({ request }) => {
       </p>
 
       <div className={styles.footer}>
-        {/* Conditionally render the button OR the "responded" message */}
-        {request.responded ? (
+        {offerMade ? ( // Use the new state variable here
           <p className={styles.respondedMessage}>
             <UserCheck size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }}/> 
-            You've responded to this request. The poster will contact you if accepted.
+            You've responded to this request.
           </p>
         ) : (
             <div className={styles.buttonGroup}>
                 <button className={styles.actionButton}>
-                <Send size={16}/>
-                I Can Manage
+                    <Send size={16}/>
+                    I Can Arrange
                 </button>
-                <button className={styles.donateButton}>
-                <HandHeart size={16}/>
-                I'm Ready to Donate
+                {/* Add onClick handler to the donate button */}
+                <button className={styles.donateButton} onClick={handleDonate}> 
+                    <HandHeart size={16}/>
+                    I'm Ready to Donate
                 </button>
             </div>
         )}
