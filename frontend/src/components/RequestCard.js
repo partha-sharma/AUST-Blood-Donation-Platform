@@ -1,10 +1,12 @@
 // frontend/src/components/RequestCard.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import styles from './RequestCard.module.css'; 
 import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart } from 'lucide-react';
 
-const RequestCard = ({ request }) => {
+const RequestCard = ({ request, onDelete  }) => {
+  const { user } = useContext(AuthContext);
   const [offerMade, setOfferMade] = useState(request.responded);
   const handleDonate = async () => {
     if (!window.confirm("Are you sure you want to offer to donate for this request?")) {
@@ -27,6 +29,21 @@ const RequestCard = ({ request }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this request? This cannot be undone.")) {
+        return;
+    }
+    try {
+        const token = localStorage.getItem('authToken');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        await axios.delete(`/api/requests/${request._id}`, config);
+        alert("Request deleted successfully.");
+        onDelete(request._id); // Notify parent to remove card from UI
+    } catch (err) {
+        alert(err.response?.data?.message || "Failed to delete request.");
+    }
+  };
+
   const cardClasses = `${styles.card} ${request.isUrgent ? styles.urgentCard : ''}`;
 
   return (
@@ -45,6 +62,14 @@ const RequestCard = ({ request }) => {
           {request.isUrgent && <span className={`${styles.tag} ${styles.urgentTag}`}>URGENT</span>}
         </div>
       </div>
+
+      {user && user._id === request.user?._id && (
+          <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '10px'}}>
+              <button onClick={handleDelete} className={styles.deleteButton}>
+                  <Trash2 size={16} /> Delete
+              </button>
+          </div>
+      )}
 
       <div className={styles.body}>
         <div className={styles.infoItem}>

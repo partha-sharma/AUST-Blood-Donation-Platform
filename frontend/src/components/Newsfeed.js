@@ -19,6 +19,10 @@ const Newsfeed = () => {
     setRequests([newRequest, ...requests]);
   };
 
+  const handleDeleteRequest = (deletedRequestId) => {
+    setRequests(prevRequests => prevRequests.filter(req => req._id !== deletedRequestId));
+  };
+
   // useEffect to fetch data when the component mounts
   useEffect(() => {
     const fetchRequests = async () => {
@@ -78,10 +82,12 @@ const Newsfeed = () => {
       </header>
 
       <div>
-        {loading && <p>Loading requests...</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
         {!loading && !error && requests.map(request => (
-          <RequestCard key={request._id} request={request} /> // Use _id from MongoDB
+          <RequestCard 
+            key={request._id} 
+            request={request} 
+            onDelete={handleDeleteRequest} 
+          />
         ))}
       </div>
 

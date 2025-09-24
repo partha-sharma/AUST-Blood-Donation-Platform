@@ -121,9 +121,37 @@ const createDonationOffer = async (req, res) => {
   }
 };
 
+const deleteRequest = async (req, res) => {
+    try {
+        const request = await Request.findById(req.params.id);
+
+        if (!request) {
+            return res.status(404).json({ success: false, message: 'Request not found' });
+        }
+        
+        // ** IMPORTANT SECURITY CHECK **
+        // Ensure the user deleting the request is the one who created it
+        if (request.user.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ success: false, message: 'User not authorized' });
+        }
+        
+        await request.deleteOne();
+
+        // Optional: Also delete any offers associated with this request
+        await DonationOffer.deleteMany({ request: req.params.id });
+
+        res.status(200).json({ success: true, message: 'Request removed' });
+
+    } catch (error) {
+        console.error('Delete Request Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
 module.exports = {
   createRequest,
   getRequests,
   getMatchingRequests,
   createDonationOffer,
+  deleteRequest,
 };
