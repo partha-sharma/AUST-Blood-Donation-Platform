@@ -153,3 +153,13 @@
 .deleteButton:hover {
   background-color: #f0f0f0;
 }
+
+/* Style for the message on a user's own request card */
+.ownPostMessage {
+  color: #555;
+  font-style: italic;
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+  padding: 10px 0;
+}

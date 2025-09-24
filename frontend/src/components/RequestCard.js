@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import styles from './RequestCard.module.css'; 
-import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart } from 'lucide-react';
+import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart, Trash2 } from 'lucide-react'; 
 
 const RequestCard = ({ request, onDelete  }) => {
   const { user } = useContext(AuthContext);
@@ -87,23 +87,33 @@ const RequestCard = ({ request, onDelete  }) => {
       </p>
 
       <div className={styles.footer}>
-        {offerMade ? ( // Use the new state variable here
+        {/*
+          This logic first checks if the card belongs to the logged-in user.
+          If it does, it shows a simple message.
+          If it doesn't, it then checks if an offer has been made, just like before.
+        */}
+
+        {user && user._id === request.user?._id ? (
+          // This will be displayed if the viewer is the author of the post.
+          <p className={styles.ownPostMessage}>Be patient and pray to Almighy. InshaAllah your necessity will be fufilled soon!</p>
+        ) : offerMade ? (
+          // This will be displayed if the viewer has already clicked "I'm Ready to Donate".
           <p className={styles.respondedMessage}>
-            <UserCheck size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }}/> 
-            You've responded to this request.
+            <UserCheck size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }}/>
+            Managed
           </p>
         ) : (
-            <div className={styles.buttonGroup}>
-                <button className={styles.actionButton}>
-                    <Send size={16}/>
-                    I Can Arrange
-                </button>
-                {/* Add onClick handler to the donate button */}
-                <button className={styles.donateButton} onClick={handleDonate}> 
-                    <HandHeart size={16}/>
-                    I'm Ready to Donate
-                </button>
-            </div>
+          // This will be displayed for all other users who have not yet responded.
+          <div className={styles.buttonGroup}>
+            <button className={styles.actionButton}>
+              <Send size={16}/>
+              I Can Arrange
+            </button>
+            <button className={styles.donateButton} onClick={handleDonate}>
+              <HandHeart size={16}/>
+              I'm Ready to Donate
+            </button>
+          </div>
         )}
       </div>
     </div>
