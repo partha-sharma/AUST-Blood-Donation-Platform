@@ -136,3 +136,30 @@
 .donateButton:hover {
   background-color: #c9302c; 
 }
+
+
+.deleteButton {
+  background-color: transparent;
+  border: 1px solid #aaa;
+  color: #555;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.deleteButton:hover {
+  background-color: #f0f0f0;
+}
+
+/* Style for the message on a user's own request card */
+.ownPostMessage {
+  color: #555;
+  font-style: italic;
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+  padding: 10px 0;
+}

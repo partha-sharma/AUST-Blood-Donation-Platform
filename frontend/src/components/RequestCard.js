@@ -1,9 +1,49 @@
 // frontend/src/components/RequestCard.js
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import styles from './RequestCard.module.css'; 
-import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart } from 'lucide-react';
+import { Heart, Droplet, MapPin, UserCheck, Send, HandHeart, Trash2 } from 'lucide-react'; 
 
-const RequestCard = ({ request }) => {
+const RequestCard = ({ request, onDelete  }) => {
+  const { user } = useContext(AuthContext);
+  const [offerMade, setOfferMade] = useState(request.responded);
+  const handleDonate = async () => {
+    if (!window.confirm("Are you sure you want to offer to donate for this request?")) {
+      return;
+    }
+
+    try {
+        const token = localStorage.getItem('authToken');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+
+        // The request ID is passed in the URL
+        await axios.post(`/api/requests/${request._id}/offer`, {}, config);
+        
+        alert("Thanks for your offer! The request poster has been notified.");
+        setOfferMade(true); // Update the button state
+
+    } catch (err) {
+        // Display the specific error message from the backend (e.g., "not eligible")
+        alert(err.response?.data?.message || "An error occurred. Could not make offer.");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this request? This cannot be undone.")) {
+        return;
+    }
+    try {
+        const token = localStorage.getItem('authToken');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        await axios.delete(`/api/requests/${request._id}`, config);
+        alert("Request deleted successfully.");
+        onDelete(request._id); // Notify parent to remove card from UI
+    } catch (err) {
+        alert(err.response?.data?.message || "Failed to delete request.");
+    }
+  };
+
   const cardClasses = `${styles.card} ${request.isUrgent ? styles.urgentCard : ''}`;
 
   return (
@@ -23,6 +63,14 @@ const RequestCard = ({ request }) => {
         </div>
       </div>
 
+      {user && user._id === request.user?._id && (
+          <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '10px'}}>
+              <button onClick={handleDelete} className={styles.deleteButton}>
+                  <Trash2 size={16} /> Delete
+              </button>
+          </div>
+      )}
+
       <div className={styles.body}>
         <div className={styles.infoItem}>
           <Droplet size={20} />
@@ -39,23 +87,33 @@ const RequestCard = ({ request }) => {
       </p>
 
       <div className={styles.footer}>
-        {/* Conditionally render the button OR the "responded" message */}
-        {request.responded ? (
+        {/*
+          This logic first checks if the card belongs to the logged-in user.
+          If it does, it shows a simple message.
+          If it doesn't, it then checks if an offer has been made, just like before.
+        */}
+
+        {user && user._id === request.user?._id ? (
+          // This will be displayed if the viewer is the author of the post.
+          <p className={styles.ownPostMessage}>Be patient and pray to Almighy. InshaAllah your necessity will be fufilled soon!</p>
+        ) : offerMade ? (
+          // This will be displayed if the viewer has already clicked "I'm Ready to Donate".
           <p className={styles.respondedMessage}>
-            <UserCheck size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }}/> 
-            You've responded to this request. The poster will contact you if accepted.
+            <UserCheck size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }}/>
+            Managed
           </p>
         ) : (
-            <div className={styles.buttonGroup}>
-                <button className={styles.actionButton}>
-                <Send size={16}/>
-                I Can Manage
-                </button>
-                <button className={styles.donateButton}>
-                <HandHeart size={16}/>
-                I'm Ready to Donate
-                </button>
-            </div>
+          // This will be displayed for all other users who have not yet responded.
+          <div className={styles.buttonGroup}>
+            <button className={styles.actionButton}>
+              <Send size={16}/>
+              I Can Arrange
+            </button>
+            <button className={styles.donateButton} onClick={handleDonate}>
+              <HandHeart size={16}/>
+              I'm Ready to Donate
+            </button>
+          </div>
         )}
       </div>
     </div>

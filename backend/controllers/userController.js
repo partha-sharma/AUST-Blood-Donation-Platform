@@ -2,6 +2,36 @@
 
 const User = require("../models/User");
 const { generateToken } = require("../utils/jwt");
+const DonationOffer = require('../models/DonationOffer');
+
+const getEligibilityStatus = async (req, res) => {
+  try {
+    // The full user object is attached by the 'protect' middleware
+    const user = req.user;
+    
+    // Set a default donation date to the account creation date if they've never donated
+    const lastDonationDate = user.lastDonation || user.createdAt;
+
+    const eligibilityDate = new Date(lastDonationDate);
+    eligibilityDate.setDate(eligibilityDate.getDate() + 120); // Add 120 days
+
+    const isEligible = new Date() > eligibilityDate;
+
+    res.status(200).json({
+      success: true,
+      data: {
+        isEligible,
+        lastDonation: user.lastDonation, // Send null if they haven't donated yet
+        nextEligibleDate: eligibilityDate,
+        registeredAt: user.createdAt
+      }
+    });
+
+  } catch (error) {
+    console.error('Get Eligibility Error:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
 
 const registerUser = async (req, res) => {
   try {
@@ -119,7 +149,28 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getMyOffers = async (req, res) => {
+    try {
+        const offers = await DonationOffer.find({ donor: req.user._id })
+            .sort({ createdAt: -1 })
+            .populate({ // We populate the request details...
+                path: 'request',
+                populate: { // ...and the user who created that request.
+                    path: 'user',
+                    select: 'fullName department'
+                }
+            });
+
+        res.status(200).json({ success: true, data: offers });
+    } catch (error) {
+        console.error('Get My Offers Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getEligibilityStatus,
+  getMyOffers,
 };
